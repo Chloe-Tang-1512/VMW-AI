@@ -1,19 +1,18 @@
-First run pip install requests on your command line/terminal
-import requests
+import urllib.request
+import json
 import random
 
 def fetch_definitions(word):
     """Fetch definitions for a given word from the Dictionary API."""
     url = f"https://api.dictionaryapi.dev/api/v2/entries/en/{word}"
     try:
-        response = requests.get(url)
-        response.raise_for_status()
-        data = response.json()
-        definitions = []
-        for meaning in data[0]["meanings"]:
-            for definition in meaning["definitions"]:
-                definitions.append(definition["definition"])
-        return definitions
+        with urllib.request.urlopen(url) as response:
+            data = json.loads(response.read().decode())
+            definitions = []
+            for meaning in data[0]["meanings"]:
+                for definition in meaning["definitions"]:
+                    definitions.append(definition["definition"])
+            return definitions
     except Exception as e:
         print(f"Error fetching definitions for '{word}': {e}")
         return []
