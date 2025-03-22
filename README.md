@@ -1,3 +1,4 @@
+First run pip install requests on your command line/terminal
 import requests
 import random
 
